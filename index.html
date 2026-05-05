@@ -2,12 +2,11 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>ОГЭ Тренажёр — Задания 15-18</title>
 <style>
   :root {
     --primary: #4f46e5;
-    --primary-light: #818cf8;
     --success: #16a34a;
     --danger: #dc2626;
     --warning: #f59e0b;
@@ -16,49 +15,49 @@
     --text: #1e293b;
     --muted: #64748b;
     --border: #e2e8f0;
-    --radius: 12px;
+    --radius: 14px;
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
   body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   header {
     background: linear-gradient(135deg, var(--primary), #7c3aed);
     color: white;
-    padding: 20px 24px;
+    padding: 24px 20px;
     text-align: center;
-    box-shadow: 0 4px 20px rgba(79,70,229,.3);
+    box-shadow: 0 4px 20px rgba(79,70,229,.25);
   }
-  header h1 { font-size: 1.6rem; font-weight: 700; }
+  header h1 { font-size: 1.5rem; font-weight: 700; }
   header p { opacity: .85; margin-top: 4px; font-size: .95rem; }
 
-  .container { max-width: 800px; margin: 0 auto; padding: 20px 16px 40px; flex: 1; }
+  .container { max-width: 800px; margin: 0 auto; padding: 20px 16px 40px; flex: 1; width: 100%; }
 
-  /* ── screens ── */
   .screen { display: none; }
-  .screen.active { display: block; }
+  .screen.active { display: block; animation: fadeIn .25s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* ── cards ── */
   .card {
     background: var(--card);
     border-radius: var(--radius);
-    box-shadow: 0 1px 4px rgba(0,0,0,.08);
-    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    padding: 20px;
     margin-bottom: 16px;
   }
 
-  /* ── task selector ── */
+  /* Grid & Lists */
   .task-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 12px;
     margin-top: 16px;
   }
@@ -66,141 +65,142 @@
     background: var(--card);
     border: 2px solid var(--border);
     border-radius: var(--radius);
-    padding: 18px 12px;
+    padding: 20px 12px;
     text-align: center;
     cursor: pointer;
-    transition: .2s;
-    font-size: 1rem;
+    transition: .15s;
+    font-size: 1.05rem;
     font-weight: 600;
     color: var(--text);
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
-  .task-btn:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79,70,229,.15); }
+  .task-btn:hover, .task-btn:active { border-color: var(--primary); color: var(--primary); background: #eef2ff; }
 
-  /* ── subtopic list ── */
   .subtopic-list { list-style: none; margin-top: 12px; }
   .subtopic-list li {
-    padding: 14px 18px;
+    padding: 16px 18px;
     border-radius: var(--radius);
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     cursor: pointer;
     background: var(--card);
     border: 1px solid var(--border);
-    transition: .15s;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: .15s;
   }
-  .subtopic-list li:hover { border-color: var(--primary); background: #eef2ff; }
+  .subtopic-list li:active { background: #f8fafc; }
   .subtopic-list li .badge {
     background: var(--primary);
     color: #fff;
     border-radius: 20px;
-    padding: 2px 10px;
-    font-size: .78rem;
+    padding: 4px 12px;
+    font-size: .8rem;
     font-weight: 600;
   }
   .subtopic-list li.completed .badge { background: var(--success); }
 
-  /* ── progress ── */
-  .progress-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin: 8px 0 0; }
+  /* Progress */
+  .progress-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin: 10px 0 0; }
   .progress-bar .fill { height: 100%; background: var(--primary); transition: width .3s; border-radius: 3px; }
 
-  /* ── question ── */
-  .question-number { font-size: .85rem; color: var(--muted); margin-bottom: 6px; }
-  .question-text { font-size: 1.1rem; line-height: 1.6; margin-bottom: 20px; }
+  /* Question UI */
+  .breadcrumb { font-size: .85rem; color: var(--muted); margin-bottom: 12px; }
+  .breadcrumb a { color: var(--primary); cursor: pointer; text-decoration: none; }
+  .breadcrumb a:active { text-decoration: underline; }
+
+  .question-number { font-size: .85rem; color: var(--muted); margin-bottom: 6px; font-weight: 500; }
+  .question-text { font-size: 1.1rem; line-height: 1.65; margin-bottom: 20px; }
   .question-text .highlight { color: var(--primary); font-weight: 600; }
 
-  .answer-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
-  .answer-row label { font-size: .9rem; color: var(--muted); font-weight: 600; }
+  .answer-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+  .answer-row label { font-size: .95rem; color: var(--muted); font-weight: 600; }
   .answer-row input {
     flex: 1;
-    min-width: 120px;
-    padding: 12px 14px;
+    min-width: 100px;
+    padding: 14px 16px;
     border: 2px solid var(--border);
-    border-radius: 8px;
-    font-size: 1.05rem;
+    border-radius: 10px;
+    font-size: 1.1rem;
     outline: none;
-    transition: border-color .2s;
+    background: #f8fafc;
   }
-  .answer-row input:focus { border-color: var(--primary); }
+  .answer-row input:focus { border-color: var(--primary); background: #fff; }
   .answer-row input.correct { border-color: var(--success); background: #f0fdf4; }
   .answer-row input.wrong { border-color: var(--danger); background: #fef2f2; }
 
+  /* Buttons */
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
-    padding: 12px 22px;
+    padding: 14px 20px;
     border: none;
-    border-radius: 8px;
-    font-size: .95rem;
+    border-radius: 10px;
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: .15s;
+    min-height: 48px;
+    flex: 1;
   }
   .btn-primary { background: var(--primary); color: #fff; }
-  .btn-primary:hover { background: #4338ca; }
+  .btn-primary:active { background: #4338ca; }
   .btn-success { background: var(--success); color: #fff; }
-  .btn-success:hover { background: #15803d; }
   .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text); }
-  .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+  .btn-outline:active { border-color: var(--primary); color: var(--primary); background: #f8fafc; }
   .btn-warning { background: var(--warning); color: #fff; }
-  .btn-warning:hover { background: #d97706; }
+  .btn-warning:active { background: #d97706; }
   .btn:disabled { opacity: .5; cursor: not-allowed; }
 
-  .btn-group { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+  .btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .btn-group .btn { flex: 1 1 auto; min-width: 140px; }
 
-  /* ── feedback ── */
-  .feedback {
-    margin-top: 16px;
-    padding: 16px 20px;
-    border-radius: var(--radius);
-    display: none;
+  /* Hints & Feedback */
+  .hints-container { margin: 12px 0; }
+  .hint {
+    background: #fef9c3;
+    border-left: 3px solid var(--warning);
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin: 8px 0;
+    font-size: .92rem;
+    animation: fadeIn .2s ease;
   }
-  .feedback.show { display: block; }
+  .feedback { margin-top: 16px; padding: 16px; border-radius: var(--radius); display: none; }
+  .feedback.show { display: block; animation: fadeIn .25s ease; }
   .feedback.success { background: #f0fdf4; border: 1px solid #bbf7d0; }
   .feedback.error { background: #fef2f2; border: 1px solid #fecaca; }
   .feedback h4 { margin-bottom: 8px; font-size: 1rem; }
   .feedback.success h4 { color: var(--success); }
   .feedback.error h4 { color: var(--danger); }
   .feedback .solution { margin-top: 10px; line-height: 1.7; font-size: .93rem; color: #374151; }
-  .feedback .solution .hint { background: #fef9c3; border-left: 3px solid var(--warning); padding: 8px 12px; border-radius: 4px; margin: 8px 0; font-size: .9rem; }
-  .feedback .answer-correct { font-weight: 700; color: var(--success); }
+  .feedback .answer-correct { font-weight: 700; color: var(--success); margin: 8px 0; }
 
-  /* ── stats ── */
-  .stats-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+  /* Stats */
+  .stats-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
   .stat-item {
     flex: 1;
-    min-width: 100px;
+    min-width: 90px;
     text-align: center;
     padding: 14px;
     background: var(--card);
     border-radius: var(--radius);
-    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    box-shadow: 0 1px 3px rgba(0,0,0,.05);
   }
-  .stat-item .num { font-size: 1.6rem; font-weight: 700; color: var(--primary); }
+  .stat-item .num { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
   .stat-item .label { font-size: .78rem; color: var(--muted); margin-top: 2px; }
 
-  /* ── breadcrumb ── */
-  .breadcrumb { font-size: .85rem; color: var(--muted); margin-bottom: 12px; }
-  .breadcrumb a { color: var(--primary); cursor: pointer; text-decoration: none; }
-  .breadcrumb a:hover { text-decoration: underline; }
-
-  /* ── responsive ── */
   @media (max-width: 500px) {
     .task-grid { grid-template-columns: 1fr 1fr; }
     .btn-group { flex-direction: column; }
     .btn { width: 100%; }
   }
-
-  /* ── animation ── */
-  .fade-in { animation: fadeIn .3s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-  /* ── SVG illustrations ── */
-  .fig-container { text-align: center; margin: 12px 0; }
-  .fig-container svg { max-width: 100%; height: auto; }
 </style>
 </head>
 <body>
@@ -212,19 +212,18 @@
 
 <div class="container">
 
-  <!-- ═══════ SCREEN: HOME ═══════ -->
-  <div id="screen-home" class="screen active fade-in">
+  <!-- HOME -->
+  <div id="screen-home" class="screen active">
     <div class="card">
       <h2 style="margin-bottom:4px;">Выберите номер задания</h2>
       <p style="color:var(--muted); font-size:.9rem;">В каждом задании — 4 подтемы, по 2 задачи в каждой</p>
       <div class="task-grid" id="task-grid"></div>
     </div>
-
     <div class="stats-row" id="global-stats"></div>
   </div>
 
-  <!-- ═══════ SCREEN: SUBTOPICS ═══════ -->
-  <div id="screen-subtopics" class="screen fade-in">
+  <!-- SUBTOPICS -->
+  <div id="screen-subtopics" class="screen">
     <div class="breadcrumb"><a onclick="showScreen('home')">Главная</a> / <span id="breadcrumb-task"></span></div>
     <div class="card">
       <h2 id="subtopics-title" style="margin-bottom:12px;"></h2>
@@ -233,8 +232,8 @@
     </div>
   </div>
 
-  <!-- ═══════ SCREEN: QUESTION ═══════ -->
-  <div id="screen-question" class="screen fade-in">
+  <!-- QUESTION -->
+  <div id="screen-question" class="screen">
     <div class="breadcrumb">
       <a onclick="showScreen('home')">Главная</a> /
       <a id="bc-task" onclick="goBackToSubtopics()"></a> /
@@ -243,27 +242,31 @@
     <div class="card" id="question-card">
       <div class="question-number" id="q-number"></div>
       <div class="question-text" id="q-text"></div>
-      <div class="fig-container" id="q-figure"></div>
-      <div class="answer-row" id="answer-row">
+      
+      <div class="answer-row">
         <label for="answer-input">Ответ:</label>
         <input type="text" id="answer-input" placeholder="Введите число" autocomplete="off">
-        <button class="btn btn-primary" id="btn-check" onclick="checkAnswer()">Проверить</button>
       </div>
+
       <div class="btn-group" id="nav-btns">
-        <button class="btn btn-outline" onclick="skipQuestion()">⏭ Пропустить</button>
+        <button class="btn btn-warning" id="btn-hint" onclick="showHint()">💡 Подсказка</button>
+        <button class="btn btn-primary" id="btn-check" onclick="checkAnswer()">Проверить</button>
+        <button class="btn btn-outline" id="btn-skip" onclick="skipQuestion()">⏭ Пропустить</button>
         <button class="btn btn-success" id="btn-next" onclick="nextQuestion()" style="display:none;">Следующее задание →</button>
       </div>
+
+      <div class="hints-container" id="hints-container"></div>
       <div class="feedback" id="feedback"></div>
     </div>
   </div>
 
-  <!-- ═══════ SCREEN: SUMMARY ═══════ -->
-  <div id="screen-summary" class="screen fade-in">
+  <!-- SUMMARY -->
+  <div id="screen-summary" class="screen">
     <div class="breadcrumb"><a onclick="showScreen('home')">Главная</a> / <span id="summary-task"></span></div>
     <div class="card" style="text-align:center;">
       <h2 style="margin-bottom:12px;">🎉 Подтема завершена!</h2>
       <div class="stats-row" id="summary-stats"></div>
-      <div class="btn-group" style="justify-content:center;">
+      <div class="btn-group" style="justify-content:center; margin-top:20px;">
         <button class="btn btn-primary" onclick="goBackToSubtopics()">К списку подтем</button>
         <button class="btn btn-outline" onclick="showScreen('home')">На главную</button>
       </div>
@@ -274,811 +277,298 @@
 
 <script>
 // ═══════════════════════════════════════════════════════════
-// DATA — все задания
+// DATA — все задания (без чертежей)
 // ═══════════════════════════════════════════════════════════
 const DATA = {
-  15: {
-    name: "Задание 15",
-    subtopics: {
-      angles: {
-        name: "Углы",
-        questions: [
-          {
-            text: "В треугольнике <span class='highlight'>ABC</span> угол <span class='highlight'>A = 30°</span>, угол <span class='highlight'>C = 40°</span>. Найдите угол B. Ответ дайте в градусах.",
-            answer: "110",
-            figure: `<svg viewBox="0 0 200 130" width="220" height="140"><polygon points="20,110 180,110 100,15" fill="none" stroke="#4f46e5" stroke-width="2"/><text x="100" y="125" text-anchor="middle" font-size="14" fill="#374151">A</text><text x="10" y="125" font-size="14" fill="#374151">C</text><text x="185" y="125" font-size="14" fill="#374151">B</text><text x="88" y="35" font-size="13" fill="#4f46e5">B=?</text></svg>`,
-            hints: [
-              "Сумма углов треугольника равна 180°.",
-              "Угол B = 180° − ∠A − ∠C."
-            ],
-            solution: "Сумма углов треугольника равна 180°. ∠B = 180° − 30° − 40° = <b>110°</b>."
-          },
-          {
-            text: "Два угла треугольника равны <span class='highlight'>55°</span> и <span class='highlight'>75°</span>. Найдите третий угол. Ответ дайте в градусах.",
-            answer: "50",
-            figure: "",
-            hints: [
-              "Сумма всех трёх углов треугольника — 180°.",
-              "Сложите два известных угла и вычтите из 180°."
-            ],
-            solution: "180° − 55° − 75° = <b>50°</b>."
-          }
-        ]
-      },
-      triangle_general: {
-        name: "Треугольник общего вида",
-        questions: [
-          {
-            text: "В треугольнике <span class='highlight'>ABC</span> угол <span class='highlight'>A = 50°</span>, угол <span class='highlight'>B = 60°</span>. Найдите внешний угол при вершине C. Ответ дайте в градусах.",
-            answer: "110",
-            figure: "",
-            hints: [
-              "Внешний угол треугольника равен сумме двух внутренних, не смежных с ним.",
-              "Внешний угол при C = ∠A + ∠B."
-            ],
-            solution: "Внешний угол при вершине C равен сумме двух других внутренних углов: 50° + 60° = <b>110°</b>."
-          },
-          {
-            text: "Стороны треугольника равны <span class='highlight'>3</span>, <span class='highlight'>4</span>, <span class='highlight'>5</span>. Найдите площадь этого треугольника.",
-            answer: "6",
-            figure: "",
-            hints: [
-              "Проверьте, является ли треугольник прямоугольным: 3² + 4² = 5².",
-              "Площадь прямоугольного треугольника = ½ × произведение катетов."
-            ],
-            solution: "3² + 4² = 9 + 16 = 25 = 5², значит треугольник прямоугольный. S = ½ × 3 × 4 = <b>6</b>."
-          }
-        ]
-      },
-      isosceles: {
-        name: "Равнобедренный треугольник",
-        questions: [
-          {
-            text: "В равнобедренном треугольнике боковая сторона равна <span class='highlight'>10</span>, основание равно <span class='highlight'>12</span>. Найдите высоту, проведённую к основанию.",
-            answer: "8",
-            figure: `<svg viewBox="0 0 200 150" width="220" height="160"><polygon points="100,10 20,130 180,130" fill="none" stroke="#4f46e5" stroke-width="2"/><line x1="100" y1="10" x2="100" y2="130" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4"/><text x="95" y="80" font-size="12" fill="#dc2626">h=?</text><text x="100" y="145" text-anchor="middle" font-size="13" fill="#374151">12</text><text x="45" y="70" font-size="13" fill="#374151">10</text></svg>`,
-            hints: [
-              "Высота равнобедренного треугольника, проведённая к основанию, является медианой.",
-              "Она делит основание пополам. Примените теорему Пифагора."
-            ],
-            solution: "Высота делит основание пополам: 12/2 = 6. По теореме Пифагора: h = √(10² − 6²) = √(100 − 36) = √64 = <b>8</b>."
-          },
-          {
-            text: "Угол при вершине равнобедренного треугольника равен <span class='highlight'>40°</span>. Найдите угол при основании. Ответ дайте в градусах.",
-            answer: "70",
-            figure: "",
-            hints: [
-              "Углы при основании равнобедренного треугольника равны.",
-              "Сумма углов = 180°. Вычтите вершинный угол и разделите на 2."
-            ],
-            solution: "Углы при основании равны. (180° − 40°) / 2 = 140° / 2 = <b>70°</b>."
-          }
-        ]
-      },
-      right_triangle: {
-        name: "Прямоугольный треугольник",
-        questions: [
-          {
-            text: "Катеты прямоугольного треугольника равны <span class='highlight'>3</span> и <span class='highlight'>4</span>. Найдите гипотенузу.",
-            answer: "5",
-            figure: `<svg viewBox="0 0 160 120" width="180" height="130"><polygon points="10,110 10,10 150,110" fill="none" stroke="#4f46e5" stroke-width="2"/><rect x="10" y="90" width="20" height="20" fill="none" stroke="#374151" stroke-width="1"/><text x="3" y="65" font-size="13" fill="#374151">3</text><text x="80" y="122" text-anchor="middle" font-size="13" fill="#374151">4</text><text x="85" y="55" font-size="13" fill="#4f46e5">c=?</text></svg>`,
-            hints: [
-              "Используйте теорему Пифагора: c² = a² + b².",
-              "c = √(3² + 4²)."
-            ],
-            solution: "По теореме Пифагора: c = √(3² + 4²) = √(9 + 16) = √25 = <b>5</b>."
-          },
-          {
-            text: "В прямоугольном треугольнике гипотенуза равна <span class='highlight'>10</span>, один катет равен <span class='highlight'>6</span>. Найдите другой катет.",
-            answer: "8",
-            figure: "",
-            hints: [
-              "Теорема Пифагора: b² = c² − a².",
-              "b = √(10² − 6²)."
-            ],
-            solution: "b = √(10² − 6²) = √(100 − 36) = √64 = <b>8</b>."
-          }
-        ]
-      }
-    }
-  },
+  15: { name: "Задание 15", subtopics: {
+    angles: { name: "Углы", questions: [
+      { text: "В треугольнике <span class='highlight'>ABC</span> угол <span class='highlight'>A = 30°</span>, угол <span class='highlight'>C = 40°</span>. Найдите угол B. Ответ дайте в градусах.", answer: "110", hints: ["Сумма углов треугольника равна 180°.", "Угол B = 180° − ∠A − ∠C."], solution: "Сумма углов треугольника равна 180°. ∠B = 180° − 30° − 40° = <b>110°</b>." },
+      { text: "Два угла треугольника равны <span class='highlight'>55°</span> и <span class='highlight'>75°</span>. Найдите третий угол. Ответ дайте в градусах.", answer: "50", hints: ["Сумма всех трёх углов треугольника — 180°.", "Сложите два известных угла и вычтите из 180°."], solution: "180° − 55° − 75° = <b>50°</b>." }
+    ]},
+    triangle_general: { name: "Треугольник общего вида", questions: [
+      { text: "В треугольнике <span class='highlight'>ABC</span> угол <span class='highlight'>A = 50°</span>, угол <span class='highlight'>B = 60°</span>. Найдите внешний угол при вершине C. Ответ дайте в градусах.", answer: "110", hints: ["Внешний угол треугольника равен сумме двух внутренних, не смежных с ним.", "Внешний угол при C = ∠A + ∠B."], solution: "Внешний угол при вершине C равен сумме двух других внутренних углов: 50° + 60° = <b>110°</b>." },
+      { text: "Стороны треугольника равны <span class='highlight'>3</span>, <span class='highlight'>4</span>, <span class='highlight'>5</span>. Найдите площадь этого треугольника.", answer: "6", hints: ["Проверьте, является ли треугольник прямоугольным: 3² + 4² = 5².", "Площадь прямоугольного треугольника = ½ × произведение катетов."], solution: "3² + 4² = 9 + 16 = 25 = 5², значит треугольник прямоугольный. S = ½ × 3 × 4 = <b>6</b>." }
+    ]},
+    isosceles: { name: "Равнобедренный треугольник", questions: [
+      { text: "В равнобедренном треугольнике боковая сторона равна <span class='highlight'>10</span>, основание равно <span class='highlight'>12</span>. Найдите высоту, проведённую к основанию.", answer: "8", hints: ["Высота равнобедренного треугольника, проведённая к основанию, является медианой.", "Она делит основание пополам. Примените теорему Пифагора."], solution: "Высота делит основание пополам: 12/2 = 6. По теореме Пифагора: h = √(10² − 6²) = √(100 − 36) = √64 = <b>8</b>." },
+      { text: "Угол при вершине равнобедренного треугольника равен <span class='highlight'>40°</span>. Найдите угол при основании. Ответ дайте в градусах.", answer: "70", hints: ["Углы при основании равнобедренного треугольника равны.", "Сумма углов = 180°. Вычтите вершинный угол и разделите на 2."], solution: "Углы при основании равны. (180° − 40°) / 2 = 140° / 2 = <b>70°</b>." }
+    ]},
+    right_triangle: { name: "Прямоугольный треугольник", questions: [
+      { text: "Катеты прямоугольного треугольника равны <span class='highlight'>3</span> и <span class='highlight'>4</span>. Найдите гипотенузу.", answer: "5", hints: ["Используйте теорему Пифагора: c² = a² + b².", "c = √(3² + 4²)."], solution: "По теореме Пифагора: c = √(3² + 4²) = √(9 + 16) = √25 = <b>5</b>." },
+      { text: "В прямоугольном треугольнике гипотенуза равна <span class='highlight'>10</span>, один катет равен <span class='highlight'>6</span>. Найдите другой катет.", answer: "8", hints: ["Теорема Пифагора: b² = c² − a².", "b = √(10² − 6²)."], solution: "b = √(10² − 6²) = √(100 − 36) = √64 = <b>8</b>." }
+    ]}
+  }},
 
-  16: {
-    name: "Задание 16",
-    subtopics: {
-      central_inscribed: {
-        name: "Центральные и вписанные углы",
-        questions: [
-          {
-            text: "Центральный угол окружности равен <span class='highlight'>80°</span>. Найдите вписанный угол, опирающийся на ту же дугу. Ответ дайте в градусах.",
-            answer: "40",
-            figure: `<svg viewBox="0 0 200 200" width="180" height="180"><circle cx="100" cy="100" r="80" fill="none" stroke="#4f46e5" stroke-width="2"/><circle cx="100" cy="100" r="3" fill="#4f46e5"/><line x1="100" y1="100" x2="170" y2="50" stroke="#374151" stroke-width="1.5"/><line x1="100" y1="100" x2="170" y2="150" stroke="#374151" stroke-width="1.5"/><line x1="40" y1="40" x2="170" y2="50" stroke="#dc2626" stroke-width="1.5"/><line x1="40" y1="40" x2="170" y2="150" stroke="#dc2626" stroke-width="1.5"/><text x="100" y="118" font-size="11" fill="#4f46e5">O</text><text x="30" y="35" font-size="12" fill="#dc2626">?°</text></svg>`,
-            hints: [
-              "Вписанный угол равен половине центрального угла, опирающегося на ту же дугу.",
-              "Вписанный = ½ × центральный."
-            ],
-            solution: "Вписанный угол равен половине центрального: 80° / 2 = <b>40°</b>."
-          },
-          {
-            text: "Вписанный угол равен <span class='highlight'>35°</span>. Найдите центральный угол, опирающийся на ту же дугу. Ответ дайте в градусах.",
-            answer: "70",
-            figure: "",
-            hints: [
-              "Центральный угол в два раза больше вписанного, опирающегося на ту же дугу.",
-              "Центральный = 2 × вписанный."
-            ],
-            solution: "Центральный угол = 2 × 35° = <b>70°</b>."
-          }
-        ]
-      },
-      tangent_chord: {
-        name: "Касательная, хорда, секущая, радиус",
-        questions: [
-          {
-            text: "Радиус окружности равен <span class='highlight'>5</span>. Из точки A, находящейся на расстоянии <span class='highlight'>13</span> от центра окружности, проведена касательная. Найдите длину отрезка касательной от точки A до точки касания.",
-            answer: "12",
-            figure: `<svg viewBox="0 0 220 130" width="240" height="130"><circle cx="60" cy="70" r="45" fill="none" stroke="#4f46e5" stroke-width="2"/><circle cx="60" cy="70" r="3" fill="#4f46e5"/><line x1="60" y1="70" x2="190" y2="70" stroke="#374151" stroke-width="1.5"/><line x1="190" y1="70" x2="105" y2="27" stroke="#dc2626" stroke-width="1.5"/><line x1="60" y1="70" x2="105" y2="27" stroke="#374151" stroke-width="1.5"/><text x="55" y="85" font-size="12" fill="#4f46e5">O</text><text x="195" y="75" font-size="12" fill="#374151">A</text><text x="140" y="42" font-size="12" fill="#dc2626">?</text></svg>`,
-            hints: [
-              "Радиус, проведённый в точку касания, перпендикулярен касательной.",
-              "Получается прямоугольный треугольник. Примените теорему Пифагора."
-            ],
-            solution: "Радиус ⊥ касательной, значит треугольник прямоугольный. По теореме Пифагора: касательная = √(13² − 5²) = √(169 − 25) = √144 = <b>12</b>."
-          },
-          {
-            text: "Из точки вне окружности проведены касательная и секущая. Длина касательной равна <span class='highlight'>8</span>, а длина внешней части секущей равна <span class='highlight'>4</span>. Найдите длину всей секущей.",
-            answer: "16",
-            figure: "",
-            hints: [
-              "Свойство: квадрат касательной равен произведению всей секущей на её внешнюю часть.",
-              "t² = (внешняя часть) × (вся секущая).",
-              "8² = 4 × x."
-            ],
-            solution: "По свойству касательной и секущей: 8² = 4 × x → 64 = 4x → x = <b>16</b>."
-          }
-        ]
-      },
-      inscribed_circle: {
-        name: "Окружность, вписанная в многоугольник",
-        questions: [
-          {
-            text: "Найдите радиус окружности, вписанной в равносторонний треугольник со стороной <span class='highlight'>6√3</span>.",
-            answer: "3",
-            figure: "",
-            hints: [
-              "Формула радиуса вписанной окружности в равносторонний треугольник: r = a√3 / 6.",
-              "Подставьте a = 6√3."
-            ],
-            solution: "r = a√3 / 6 = (6√3 × √3) / 6 = (6 × 3) / 6 = <b>3</b>."
-          },
-          {
-            text: "Сторона квадрата равна <span class='highlight'>10</span>. Найдите радиус окружности, вписанной в этот квадрат.",
-            answer: "5",
-            figure: "",
-            hints: [
-              "Диаметр вписанной окружности равен стороне квадрата.",
-              "Радиус = половина стороны."
-            ],
-            solution: "Диаметр вписанной окружности = стороне квадрата = 10. Радиус = 10 / 2 = <b>5</b>."
-          }
-        ]
-      },
-      circumscribed_circle: {
-        name: "Окружность, описанная вокруг многоугольника",
-        questions: [
-          {
-            text: "Сторона равностороннего треугольника равна <span class='highlight'>6</span>. Найдите радиус описанной окружности.",
-            answer: "2√3",
-            figure: "",
-            hints: [
-              "Формула радиуса описанной окружности равностороннего треугольника: R = a√3 / 3.",
-              "Подставьте a = 6."
-            ],
-            solution: "R = a√3 / 3 = 6√3 / 3 = <b>2√3</b>. (≈ 3.46)"
-          },
-          {
-            text: "Диагональ квадрата равна <span class='highlight'>10</span>. Найдите радиус окружности, описанной вокруг этого квадрата.",
-            answer: "5",
-            figure: "",
-            hints: [
-              "Центр описанной окружности квадрата — точка пересечения диагоналей.",
-              "Радиус равен половине диагонали."
-            ],
-            solution: "Радиус описанной окружности квадрата = ½ × диагональ = ½ × 10 = <b>5</b>."
-          }
-        ]
-      }
-    }
-  },
+  16: { name: "Задание 16", subtopics: {
+    central_inscribed: { name: "Центральные и вписанные углы", questions: [
+      { text: "Центральный угол окружности равен <span class='highlight'>80°</span>. Найдите вписанный угол, опирающийся на ту же дугу. Ответ дайте в градусах.", answer: "40", hints: ["Вписанный угол равен половине центрального угла, опирающегося на ту же дугу.", "Вписанный = ½ × центральный."], solution: "Вписанный угол равен половине центрального: 80° / 2 = <b>40°</b>." },
+      { text: "Вписанный угол равен <span class='highlight'>35°</span>. Найдите центральный угол, опирающийся на ту же дугу. Ответ дайте в градусах.", answer: "70", hints: ["Центральный угол в два раза больше вписанного, опирающегося на ту же дугу.", "Центральный = 2 × вписанный."], solution: "Центральный угол = 2 × 35° = <b>70°</b>." }
+    ]},
+    tangent_chord: { name: "Касательная, хорда, секущая, радиус", questions: [
+      { text: "Радиус окружности равен <span class='highlight'>5</span>. Из точки A, находящейся на расстоянии <span class='highlight'>13</span> от центра окружности, проведена касательная. Найдите длину отрезка касательной от точки A до точки касания.", answer: "12", hints: ["Радиус, проведённый в точку касания, перпендикулярен касательной.", "Получается прямоугольный треугольник. Примените теорему Пифагора."], solution: "Радиус ⊥ касательной, значит треугольник прямоугольный. По теореме Пифагора: касательная = √(13² − 5²) = √(169 − 25) = √144 = <b>12</b>." },
+      { text: "Из точки вне окружности проведены касательная и секущая. Длина касательной равна <span class='highlight'>8</span>, а длина внешней части секущей равна <span class='highlight'>4</span>. Найдите длину всей секущей.", answer: "16", hints: ["Свойство: квадрат касательной равен произведению всей секущей на её внешнюю часть.", "t² = (внешняя часть) × (вся секущая).", "8² = 4 × x."], solution: "По свойству касательной и секущей: 8² = 4 × x → 64 = 4x → x = <b>16</b>." }
+    ]},
+    inscribed_circle: { name: "Окружность, вписанная в многоугольник", questions: [
+      { text: "Найдите радиус окружности, вписанной в равносторонний треугольник со стороной <span class='highlight'>6√3</span>.", answer: "3", hints: ["Формула радиуса вписанной окружности в равносторонний треугольник: r = a√3 / 6.", "Подставьте a = 6√3."], solution: "r = a√3 / 6 = (6√3 × √3) / 6 = (6 × 3) / 6 = <b>3</b>." },
+      { text: "Сторона квадрата равна <span class='highlight'>10</span>. Найдите радиус окружности, вписанной в этот квадрат.", answer: "5", hints: ["Диаметр вписанной окружности равен стороне квадрата.", "Радиус = половина стороны."], solution: "Диаметр вписанной окружности = стороне квадрата = 10. Радиус = 10 / 2 = <b>5</b>." }
+    ]},
+    circumscribed_circle: { name: "Окружность, описанная вокруг многоугольника", questions: [
+      { text: "Сторона равностороннего треугольника равна <span class='highlight'>6</span>. Найдите радиус описанной окружности.", answer: "2√3", hints: ["Формула радиуса описанной окружности равностороннего треугольника: R = a√3 / 3.", "Подставьте a = 6."], solution: "R = a√3 / 3 = 6√3 / 3 = <b>2√3</b>. (≈ 3.46)" },
+      { text: "Диагональ квадрата равна <span class='highlight'>10</span>. Найдите радиус окружности, описанной вокруг этого квадрата.", answer: "5", hints: ["Центр описанной окружности квадрата — точка пересечения диагоналей.", "Радиус равен половине диагонали."], solution: "Радиус описанной окружности квадрата = ½ × диагональ = ½ × 10 = <b>5</b>." }
+    ]}
+  }},
 
-  17: {
-    name: "Задание 17",
-    subtopics: {
-      rhombus: {
-        name: "Ромб",
-        questions: [
-          {
-            text: "Сторона ромба равна <span class='highlight'>10</span>, один из углов равен <span class='highlight'>30°</span>. Найдите площадь ромба.",
-            answer: "50",
-            figure: "",
-            hints: [
-              "Площадь ромба через сторону и угол: S = a² · sin(α).",
-              "S = 10² · sin(30°). sin(30°) = 0.5."
-            ],
-            solution: "S = a² · sin(α) = 10² × sin(30°) = 100 × 0.5 = <b>50</b>."
-          },
-          {
-            text: "Диагонали ромба равны <span class='highlight'>6</span> и <span class='highlight'>8</span>. Найдите площадь ромба.",
-            answer: "24",
-            figure: "",
-            hints: [
-              "Площадь ромба через диагонали: S = ½ · d₁ · d₂."
-            ],
-            solution: "S = ½ × 6 × 8 = <b>24</b>."
-          }
-        ]
-      },
-      rectangle: {
-        name: "Прямоугольник",
-        questions: [
-          {
-            text: "Стороны прямоугольника равны <span class='highlight'>3</span> и <span class='highlight'>4</span>. Найдите диагональ.",
-            answer: "5",
-            figure: `<svg viewBox="0 0 180 120" width="200" height="130"><rect x="10" y="15" width="120" height="80" fill="none" stroke="#4f46e5" stroke-width="2"/><line x1="10" y1="15" x2="130" y2="95" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4"/><text x="10" y="140" font-size="12" fill="#374151">3</text><text x="15" y="60" font-size="12" fill="#374151">4</text><text x="80" y="45" font-size="12" fill="#dc2626">d=?</text></svg>`,
-            hints: [
-              "Диагональ прямоугольника — гипотенуза прямоугольного треугольника с катетами, равными сторонам.",
-              "d = √(3² + 4²)."
-            ],
-            solution: "d = √(3² + 4²) = √(9 + 16) = √25 = <b>5</b>."
-          },
-          {
-            text: "Периметр прямоугольника равен <span class='highlight'>20</span>, одна сторона равна <span class='highlight'>3</span>. Найдите площадь.",
-            answer: "21",
-            figure: "",
-            hints: [
-              "P = 2(a + b) → a + b = P/2.",
-              "Найдите вторую сторону, затем S = a × b."
-            ],
-            solution: "a + b = 20/2 = 10. Вторая сторона: 10 − 3 = 7. S = 3 × 7 = <b>21</b>."
-          }
-        ]
-      },
-      parallelogram: {
-        name: "Параллелограмм",
-        questions: [
-          {
-            text: "Стороны параллелограмма равны <span class='highlight'>5</span> и <span class='highlight'>8</span>, угол между ними равен <span class='highlight'>30°</span>. Найдите площадь.",
-            answer: "20",
-            figure: "",
-            hints: [
-              "Площадь параллелограмма: S = a · b · sin(α).",
-              "sin(30°) = 0.5."
-            ],
-            solution: "S = 5 × 8 × sin(30°) = 40 × 0.5 = <b>20</b>."
-          },
-          {
-            text: "В параллелограмме одна сторона равна <span class='highlight'>6</span>, а высота, проведённая к ней, равна <span class='highlight'>4</span>. Найдите площадь.",
-            answer: "24",
-            figure: "",
-            hints: [
-              "Площадь параллелограмма: S = основание × высота."
-            ],
-            solution: "S = 6 × 4 = <b>24</b>."
-          }
-        ]
-      },
-      trapezoid: {
-        name: "Трапеция",
-        questions: [
-          {
-            text: "Основания трапеции равны <span class='highlight'>6</span> и <span class='highlight'>10</span>, высота равна <span class='highlight'>4</span>. Найдите площадь трапеции.",
-            answer: "32",
-            figure: "",
-            hints: [
-              "Площадь трапеции: S = ½ · (a + b) · h."
-            ],
-            solution: "S = ½ × (6 + 10) × 4 = ½ × 16 × 4 = <b>32</b>."
-          },
-          {
-            text: "Средняя линия трапеции равна <span class='highlight'>7</span>. Найдите сумму оснований.",
-            answer: "14",
-            figure: "",
-            hints: [
-              "Средняя линия трапеции равна полусумме оснований: m = (a + b) / 2.",
-              "a + b = 2m."
-            ],
-            solution: "Сумма оснований = 2 × 7 = <b>14</b>."
-          }
-        ]
-      }
-    }
-  },
+  17: { name: "Задание 17", subtopics: {
+    rhombus: { name: "Ромб", questions: [
+      { text: "Сторона ромба равна <span class='highlight'>10</span>, один из углов равен <span class='highlight'>30°</span>. Найдите площадь ромба.", answer: "50", hints: ["Площадь ромба через сторону и угол: S = a² · sin(α).", "S = 10² · sin(30°). sin(30°) = 0.5."], solution: "S = a² · sin(α) = 10² × sin(30°) = 100 × 0.5 = <b>50</b>." },
+      { text: "Диагонали ромба равны <span class='highlight'>6</span> и <span class='highlight'>8</span>. Найдите площадь ромба.", answer: "24", hints: ["Площадь ромба через диагонали: S = ½ · d₁ · d₂."], solution: "S = ½ × 6 × 8 = <b>24</b>." }
+    ]},
+    rectangle: { name: "Прямоугольник", questions: [
+      { text: "Стороны прямоугольника равны <span class='highlight'>3</span> и <span class='highlight'>4</span>. Найдите диагональ.", answer: "5", hints: ["Диагональ прямоугольника — гипотенуза прямоугольного треугольника с катетами, равными сторонам.", "d = √(3² + 4²)."], solution: "d = √(3² + 4²) = √(9 + 16) = √25 = <b>5</b>." },
+      { text: "Периметр прямоугольника равен <span class='highlight'>20</span>, одна сторона равна <span class='highlight'>3</span>. Найдите площадь.", answer: "21", hints: ["P = 2(a + b) → a + b = P/2.", "Найдите вторую сторону, затем S = a × b."], solution: "a + b = 20/2 = 10. Вторая сторона: 10 − 3 = 7. S = 3 × 7 = <b>21</b>." }
+    ]},
+    parallelogram: { name: "Параллелограмм", questions: [
+      { text: "Стороны параллелограмма равны <span class='highlight'>5</span> и <span class='highlight'>8</span>, угол между ними равен <span class='highlight'>30°</span>. Найдите площадь.", answer: "20", hints: ["Площадь параллелограмма: S = a · b · sin(α).", "sin(30°) = 0.5."], solution: "S = 5 × 8 × sin(30°) = 40 × 0.5 = <b>20</b>." },
+      { text: "В параллелограмме одна сторона равна <span class='highlight'>6</span>, а высота, проведённая к ней, равна <span class='highlight'>4</span>. Найдите площадь.", answer: "24", hints: ["Площадь параллелограмма: S = основание × высота."], solution: "S = 6 × 4 = <b>24</b>." }
+    ]},
+    trapezoid: { name: "Трапеция", questions: [
+      { text: "Основания трапеции равны <span class='highlight'>6</span> и <span class='highlight'>10</span>, высота равна <span class='highlight'>4</span>. Найдите площадь трапеции.", answer: "32", hints: ["Площадь трапеции: S = ½ · (a + b) · h."], solution: "S = ½ × (6 + 10) × 4 = ½ × 16 × 4 = <b>32</b>." },
+      { text: "Средняя линия трапеции равна <span class='highlight'>7</span>. Найдите сумму оснований.", answer: "14", hints: ["Средняя линия трапеции равна полусумме оснований: m = (a + b) / 2.", "a + b = 2m."], solution: "Сумма оснований = 2 × 7 = <b>14</b>." }
+    ]}
+  }},
 
-  18: {
-    name: "Задание 18",
-    subtopics: {
-      distance: {
-        name: "Расстояние между точками и от точки до прямой",
-        questions: [
-          {
-            text: "Найдите расстояние между точками <span class='highlight'>A(0; 0)</span> и <span class='highlight'>B(3; 4)</span>.",
-            answer: "5",
-            figure: `<svg viewBox="0 0 180 140" width="200" height="150"><line x1="20" y1="120" x2="170" y2="120" stroke="#cbd5e1" stroke-width="1"/><line x1="20" y1="120" x2="20" y2="10" stroke="#cbd5e1" stroke-width="1"/><circle cx="20" cy="120" r="4" fill="#4f46e5"/><circle cx="140" cy="20" r="4" fill="#dc2626"/><line x1="20" y1="120" x2="140" y2="20" stroke="#4f46e5" stroke-width="1.5" stroke-dasharray="4"/><text x="10" y="135" font-size="12" fill="#374151">0</text><text x="14" y="115" font-size="11" fill="#4f46e5">A(0;0)</text><text x="145" y="15" font-size="11" fill="#dc2626">B(3;4)</text><text x="85" y="60" font-size="12" fill="#4f46e5">d=?</text></svg>`,
-            hints: [
-              "Формула расстояния между точками: d = √((x₂−x₁)² + (y₂−y₁)²).",
-              "d = √(3² + 4²)."
-            ],
-            solution: "d = √(3² + 4²) = √(9 + 16) = √25 = <b>5</b>."
-          },
-          {
-            text: "Найдите расстояние от точки <span class='highlight'>M(2; 5)</span> до прямой <span class='highlight'>y = 0</span> (ось абсцисс).",
-            answer: "5",
-            figure: "",
-            hints: [
-              "Расстояние от точки до оси Ox равно модулю её ординаты.",
-              "d = |y|."
-            ],
-            solution: "Расстояние от точки M(2; 5) до оси Ox равно |5| = <b>5</b>."
-          }
-        ]
-      },
-      midline: {
-        name: "Средняя линия",
-        questions: [
-          {
-            text: "В треугольнике сторона <span class='highlight'>AB = 10</span>. Найдите среднюю линию, параллельную стороне AB.",
-            answer: "5",
-            figure: "",
-            hints: [
-              "Средняя линия треугольника параллельна одной из сторон и равна её половине."
-            ],
-            solution: "Средняя линия = ½ × 10 = <b>5</b>."
-          },
-          {
-            text: "В трапеции основания равны <span class='highlight'>4</span> и <span class='highlight'>10</span>. Найдите среднюю линию.",
-            answer: "7",
-            figure: "",
-            hints: [
-              "Средняя линия трапеции = ½ · (a + b)."
-            ],
-            solution: "Средняя линия = ½ × (4 + 10) = ½ × 14 = <b>7</b>."
-          }
-        ]
-      },
-      pythagoras: {
-        name: "Теорема Пифагора",
-        questions: [
-          {
-            text: "Катеты прямоугольного треугольника равны <span class='highlight'>5</span> и <span class='highlight'>12</span>. Найдите гипотенузу.",
-            answer: "13",
-            figure: "",
-            hints: [
-              "c² = a² + b².",
-              "c = √(5² + 12²)."
-            ],
-            solution: "c = √(25 + 144) = √169 = <b>13</b>."
-          },
-          {
-            text: "Гипотенуза прямоугольного треугольника равна <span class='highlight'>17</span>, один катет равен <span class='highlight'>8</span>. Найдите другой катет.",
-            answer: "15",
-            figure: "",
-            hints: [
-              "b² = c² − a².",
-              "b = √(17² − 8²)."
-            ],
-            solution: "b = √(289 − 64) = √225 = <b>15</b>."
-          }
-        ]
-      },
-      areas: {
-        name: "Площади",
-        questions: [
-          {
-            text: "Найдите площадь прямоугольного треугольника с катетами <span class='highlight'>3</span> и <span class='highlight'>4</span>.",
-            answer: "6",
-            figure: "",
-            hints: [
-              "S = ½ × a × b (для прямоугольного треугольника)."
-            ],
-            solution: "S = ½ × 3 × 4 = <b>6</b>."
-          },
-          {
-            text: "Найдите площадь трапеции с основаниями <span class='highlight'>5</span> и <span class='highlight'>7</span> и высотой <span class='highlight'>3</span>.",
-            answer: "18",
-            figure: "",
-            hints: [
-              "S = ½ · (a + b) · h."
-            ],
-            solution: "S = ½ × (5 + 7) × 3 = ½ × 12 × 3 = <b>18</b>."
-          }
-        ]
-      },
-      side_lengths: {
-        name: "Длины сторон",
-        questions: [
-          {
-            text: "В равнобедренном треугольнике боковая сторона равна <span class='highlight'>13</span>, высота к основанию равна <span class='highlight'>5</span>. Найдите основание.",
-            answer: "24",
-            figure: "",
-            hints: [
-              "Высота делит основание пополам и образует прямоугольный треугольник.",
-              "Половина основания = √(13² − 5²)."
-            ],
-            solution: "Половина основания = √(169 − 25) = √144 = 12. Основание = 2 × 12 = <b>24</b>."
-          },
-          {
-            text: "В прямоугольном треугольнике катет равен <span class='highlight'>9</span>, гипотенуза равна <span class='highlight'>15</span>. Найдите другой катет.",
-            answer: "12",
-            figure: "",
-            hints: [
-              "b = √(c² − a²).",
-              "b = √(15² − 9²)."
-            ],
-            solution: "b = √(225 − 81) = √144 = <b>12</b>."
-          }
-        ]
-      }
-    }
-  }
+  18: { name: "Задание 18", subtopics: {
+    distance: { name: "Расстояние между точками и от точки до прямой", questions: [
+      { text: "Найдите расстояние между точками <span class='highlight'>A(0; 0)</span> и <span class='highlight'>B(3; 4)</span>.", answer: "5", hints: ["Формула расстояния между точками: d = √((x₂−x₁)² + (y₂−y₁)²).", "d = √(3² + 4²)."], solution: "d = √(3² + 4²) = √(9 + 16) = √25 = <b>5</b>." },
+      { text: "Найдите расстояние от точки <span class='highlight'>M(2; 5)</span> до прямой <span class='highlight'>y = 0</span> (ось абсцисс).", answer: "5", hints: ["Расстояние от точки до оси Ox равно модулю её ординаты.", "d = |y|."], solution: "Расстояние от точки M(2; 5) до оси Ox равно |5| = <b>5</b>." }
+    ]},
+    midline: { name: "Средняя линия", questions: [
+      { text: "В треугольнике сторона <span class='highlight'>AB = 10</span>. Найдите среднюю линию, параллельную стороне AB.", answer: "5", hints: ["Средняя линия треугольника параллельна одной из сторон и равна её половине."], solution: "Средняя линия = ½ × 10 = <b>5</b>." },
+      { text: "В трапеции основания равны <span class='highlight'>4</span> и <span class='highlight'>10</span>. Найдите среднюю линию.", answer: "7", hints: ["Средняя линия трапеции = ½ · (a + b)."], solution: "Средняя линия = ½ × (4 + 10) = ½ × 14 = <b>7</b>." }
+    ]},
+    pythagoras: { name: "Теорема Пифагора", questions: [
+      { text: "Катеты прямоугольного треугольника равны <span class='highlight'>5</span> и <span class='highlight'>12</span>. Найдите гипотенузу.", answer: "13", hints: ["c² = a² + b².", "c = √(5² + 12²)."], solution: "c = √(25 + 144) = √169 = <b>13</b>." },
+      { text: "Гипотенуза прямоугольного треугольника равна <span class='highlight'>17</span>, один катет равен <span class='highlight'>8</span>. Найдите другой катет.", answer: "15", hints: ["b² = c² − a².", "b = √(17² − 8²)."], solution: "b = √(289 − 64) = √225 = <b>15</b>." }
+    ]},
+    areas: { name: "Площади", questions: [
+      { text: "Найдите площадь прямоугольного треугольника с катетами <span class='highlight'>3</span> и <span class='highlight'>4</span>.", answer: "6", hints: ["S = ½ × a × b (для прямоугольного треугольника)."], solution: "S = ½ × 3 × 4 = <b>6</b>." },
+      { text: "Найдите площадь трапеции с основаниями <span class='highlight'>5</span> и <span class='highlight'>7</span> и высотой <span class='highlight'>3</span>.", answer: "18", hints: ["S = ½ · (a + b) · h."], solution: "S = ½ × (5 + 7) × 3 = ½ × 12 × 3 = <b>18</b>." }
+    ]},
+    side_lengths: { name: "Длины сторон", questions: [
+      { text: "В равнобедренном треугольнике боковая сторона равна <span class='highlight'>13</span>, высота к основанию равна <span class='highlight'>5</span>. Найдите основание.", answer: "24", hints: ["Высота делит основание пополам и образует прямоугольный треугольник.", "Половина основания = √(13² − 5²)."], solution: "Половина основания = √(169 − 25) = √144 = 12. Основание = 2 × 12 = <b>24</b>." },
+      { text: "В прямоугольном треугольнике катет равен <span class='highlight'>9</span>, гипотенуза равна <span class='highlight'>15</span>. Найдите другой катет.", answer: "12", hints: ["b = √(c² − a²).", "b = √(15² − 9²)."], solution: "b = √(225 − 81) = √144 = <b>12</b>." }
+    ]}
+  }}
 };
 
 // ═══════════════════════════════════════════════════════════
-// STATE
+// STATE & LOGIC
 // ═══════════════════════════════════════════════════════════
 let state = {
   currentTask: null,
   currentSubtopic: null,
   currentQuestionIndex: 0,
-  completed: {},     // { "15-angles": [true, false], ... }
-  skipped: 0,
-  correct: 0,
-  wrong: 0,
-  sessionSubtopic: { correct: 0, wrong: 0, skipped: 0 }
+  completed: {},
+  skipped: 0, correct: 0, wrong: 0,
+  session: { correct: 0, wrong: 0, skipped: 0 }
 };
+let currentHintIndex = 0;
 
 function loadState() {
   try {
     const saved = localStorage.getItem('oge_trainer');
-    if (saved) {
-      const s = JSON.parse(saved);
-      state.completed = s.completed || {};
-      state.skipped = s.skipped || 0;
-      state.correct = s.correct || 0;
-      state.wrong = s.wrong || 0;
-    }
+    if (saved) { const s = JSON.parse(saved); state.completed = s.completed || {}; state.skipped = s.skipped || 0; state.correct = s.correct || 0; state.wrong = s.wrong || 0; }
   } catch(e) {}
 }
-
 function saveState() {
-  localStorage.setItem('oge_trainer', JSON.stringify({
-    completed: state.completed,
-    skipped: state.skipped,
-    correct: state.correct,
-    wrong: state.wrong
-  }));
+  localStorage.setItem('oge_trainer', JSON.stringify({ completed: state.completed, skipped: state.skipped, correct: state.correct, wrong: state.wrong }));
 }
 
-// ═══════════════════════════════════════════════════════════
-// SCREENS
-// ═══════════════════════════════════════════════════════════
 function showScreen(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-' + name).classList.add('active');
-
   if (name === 'home') renderHome();
   if (name === 'subtopics') renderSubtopics();
 }
 
-// ═══════════════════════════════════════════════════════════
 // HOME
-// ═══════════════════════════════════════════════════════════
 function renderHome() {
-  const grid = document.getElementById('task-grid');
-  grid.innerHTML = '';
+  const grid = document.getElementById('task-grid'); grid.innerHTML = '';
   [15, 16, 17, 18].forEach(num => {
-    const btn = document.createElement('div');
-    btn.className = 'task-btn';
+    const btn = document.createElement('div'); btn.className = 'task-btn';
     btn.innerHTML = `${num}<br><span style="font-size:.8rem;color:var(--muted);font-weight:400;">Геометрия</span>`;
-    btn.onclick = () => selectTask(num);
-    grid.appendChild(btn);
+    btn.onclick = () => selectTask(num); grid.appendChild(btn);
   });
-
-  // Global stats
-  const stats = document.getElementById('global-stats');
   const total = state.correct + state.wrong;
   const pct = total > 0 ? Math.round(state.correct / total * 100) : 0;
-  stats.innerHTML = `
+  document.getElementById('global-stats').innerHTML = `
     <div class="stat-item"><div class="num">${state.correct}</div><div class="label">Верно</div></div>
     <div class="stat-item"><div class="num">${state.wrong}</div><div class="label">Ошибки</div></div>
     <div class="stat-item"><div class="num">${state.skipped}</div><div class="label">Пропущено</div></div>
-    <div class="stat-item"><div class="num">${pct}%</div><div class="label">Точность</div></div>
-  `;
+    <div class="stat-item"><div class="num">${pct}%</div><div class="label">Точность</div></div>`;
 }
 
-// ═══════════════════════════════════════════════════════════
+function selectTask(num) { state.currentTask = num; showScreen('subtopics'); }
+
 // SUBTOPICS
-// ═══════════════════════════════════════════════════════════
-function selectTask(num) {
-  state.currentTask = num;
-  showScreen('subtopics');
-}
-
 function renderSubtopics() {
   const taskData = DATA[state.currentTask];
   document.getElementById('breadcrumb-task').textContent = taskData.name;
   document.getElementById('subtopics-title').textContent = taskData.name;
-
-  const list = document.getElementById('subtopic-list');
-  list.innerHTML = '';
-
-  let completedCount = 0;
-  const totalSubtopics = Object.keys(taskData.subtopics).length;
-
+  const list = document.getElementById('subtopic-list'); list.innerHTML = '';
+  let completedCount = 0; const totalSub = Object.keys(taskData.subtopics).length;
   Object.entries(taskData.subtopics).forEach(([key, sub]) => {
     const compKey = `${state.currentTask}-${key}`;
     const comp = state.completed[compKey] || [];
     const done = comp.filter(Boolean).length;
-    const isComplete = done >= 2;
-    if (isComplete) completedCount++;
-
-    const li = document.createElement('li');
-    if (isComplete) li.classList.add('completed');
-    li.innerHTML = `
-      <span>${sub.name}</span>
-      <span class="badge">${done}/2</span>
-    `;
-    li.onclick = () => startSubtopic(key);
-    list.appendChild(li);
+    if (done >= 2) completedCount++;
+    const li = document.createElement('li'); if (done >= 2) li.classList.add('completed');
+    li.innerHTML = `<span>${sub.name}</span><span class="badge">${done}/2</span>`;
+    li.onclick = () => startSubtopic(key); list.appendChild(li);
   });
-
-  const pct = Math.round(completedCount / totalSubtopics * 100);
-  document.getElementById('subtopic-progress').style.width = pct + '%';
+  document.getElementById('subtopic-progress').style.width = Math.round(completedCount / totalSub * 100) + '%';
 }
+function goBackToSubtopics() { showScreen('subtopics'); }
 
-function goBackToSubtopics() {
-  showScreen('subtopics');
-}
-
-// ═══════════════════════════════════════════════════════════
 // QUESTIONS
-// ═══════════════════════════════════════════════════════════
 function startSubtopic(key) {
-  state.currentSubtopic = key;
-  state.currentQuestionIndex = 0;
-  state.sessionSubtopic = { correct: 0, wrong: 0, skipped: 0 };
-  showScreen('question');
-  renderQuestion();
+  state.currentSubtopic = key; state.currentQuestionIndex = 0;
+  state.session = { correct: 0, wrong: 0, skipped: 0 };
+  showScreen('question'); renderQuestion();
 }
 
 function renderQuestion() {
   const taskData = DATA[state.currentTask];
   const sub = taskData.subtopics[state.currentSubtopic];
   const q = sub.questions[state.currentQuestionIndex];
-
+  
   document.getElementById('bc-task').textContent = taskData.name;
   document.getElementById('bc-subtopic').textContent = sub.name;
   document.getElementById('q-number').textContent = `Вопрос ${state.currentQuestionIndex + 1} из 2 — ${sub.name}`;
   document.getElementById('q-text').innerHTML = q.text;
 
-  const figContainer = document.getElementById('q-figure');
-  if (q.figure) {
-    figContainer.innerHTML = q.figure;
-    figContainer.style.display = 'block';
-  } else {
-    figContainer.innerHTML = '';
-    figContainer.style.display = 'none';
-  }
-
-  // Reset
-  const input = document.getElementById('answer-input');
-  input.value = '';
-  input.className = '';
-  input.disabled = false;
-  input.focus();
+  currentHintIndex = 0;
+  document.getElementById('hints-container').innerHTML = '';
+  document.getElementById('hints-container').style.display = 'none';
+  document.getElementById('btn-hint').style.display = (q.hints && q.hints.length > 0) ? '' : 'none';
   document.getElementById('btn-check').style.display = '';
+  document.getElementById('btn-skip').style.display = '';
   document.getElementById('btn-next').style.display = 'none';
-  document.querySelector('.btn-warning') && document.querySelector('.btn-warning').remove();
 
-  // Re-add skip button
-  let skipBtn = document.querySelector('#nav-btns .btn-warning');
-  if (!skipBtn) {
-    skipBtn = document.createElement('button');
-    skipBtn.className = 'btn btn-warning';
-    skipBtn.textContent = '⏭ Пропустить';
-    skipBtn.onclick = skipQuestion;
-    document.getElementById('nav-btns').prepend(skipBtn);
-  }
+  const input = document.getElementById('answer-input');
+  input.value = ''; input.className = ''; input.disabled = false; input.focus();
+  document.getElementById('feedback').className = 'feedback'; document.getElementById('feedback').innerHTML = '';
+}
 
-  const fb = document.getElementById('feedback');
-  fb.className = 'feedback';
-  fb.innerHTML = '';
+function showHint() {
+  const taskData = DATA[state.currentTask];
+  const sub = taskData.subtopics[state.currentSubtopic];
+  const q = sub.questions[state.currentQuestionIndex];
+  if (!q.hints || currentHintIndex >= q.hints.length) return;
+
+  const container = document.getElementById('hints-container');
+  container.style.display = 'block';
+  const div = document.createElement('div');
+  div.className = 'hint';
+  div.innerHTML = `💡 <b>Подсказка ${currentHintIndex + 1}:</b> ${q.hints[currentHintIndex]}`;
+  container.appendChild(div);
+  currentHintIndex++;
+  if (currentHintIndex >= q.hints.length) document.getElementById('btn-hint').style.display = 'none';
 }
 
 function checkAnswer() {
   const input = document.getElementById('answer-input');
-  const userAnswer = input.value.trim().replace(',', '.');
-  if (!userAnswer) { input.focus(); return; }
-
+  const userAns = input.value.trim().replace(',', '.');
+  if (!userAns) { input.focus(); return; }
+  
   const taskData = DATA[state.currentTask];
   const sub = taskData.subtopics[state.currentSubtopic];
   const q = sub.questions[state.currentQuestionIndex];
-  const correctAnswer = q.answer;
-
-  // Normalize — allow both exact and decimal approximations
-  const isCorrect = normalizeAnswer(userAnswer) === normalizeAnswer(correctAnswer);
-
+  
+  const isCorrect = normalizeAnswer(userAns) === normalizeAnswer(q.answer);
   const compKey = `${state.currentTask}-${state.currentSubtopic}`;
   if (!state.completed[compKey]) state.completed[compKey] = [false, false];
 
   const fb = document.getElementById('feedback');
+  input.disabled = true;
+  document.getElementById('btn-check').style.display = 'none';
+  document.getElementById('btn-skip').style.display = 'none';
+  document.getElementById('btn-hint').style.display = 'none';
 
   if (isCorrect) {
     input.className = 'correct';
-    input.disabled = true;
-    document.getElementById('btn-check').style.display = 'none';
-    state.correct++;
-    state.sessionSubtopic.correct++;
+    state.correct++; state.session.correct++;
     state.completed[compKey][state.currentQuestionIndex] = true;
-
     fb.className = 'feedback show success';
     fb.innerHTML = `<h4>✅ Верно! Отличная работа!</h4>`;
-
-    // Show skip removal and next button
-    const skipBtn = document.querySelector('#nav-btns .btn-warning');
-    if (skipBtn) skipBtn.remove();
-    document.getElementById('btn-next').style.display = '';
   } else {
     input.className = 'wrong';
-    input.disabled = true;
-    document.getElementById('btn-check').style.display = 'none';
-    state.wrong++;
-    state.sessionSubtopic.wrong++;
-
-    // Build solution with hints
-    let hintsHTML = '';
-    if (q.hints) {
-      q.hints.forEach((h, i) => {
-        hintsHTML += `<div class="hint">💡 <b>Подсказка ${i + 1}:</b> ${h}</div>`;
-      });
-    }
-
+    state.wrong++; state.session.wrong++;
     fb.className = 'feedback show error';
-    fb.innerHTML = `
-      <h4>❌ Неверно</h4>
-      <div class="solution">
-        <p><b>Ваш ответ:</b> ${userAnswer}</p>
-        <p class="answer-correct">✅ Правильный ответ: ${correctAnswer}</p>
-        ${hintsHTML}
-        <p style="margin-top:10px;"><b>Решение:</b> ${q.solution}</p>
-      </div>
-    `;
-
-    const skipBtn = document.querySelector('#nav-btns .btn-warning');
-    if (skipBtn) skipBtn.remove();
-    document.getElementById('btn-next').style.display = '';
+    fb.innerHTML = `<h4>❌ Неверно</h4><div class="solution"><p><b>Ваш ответ:</b> ${userAns}</p><p class="answer-correct">✅ Правильный ответ: ${q.answer}</p><p style="margin-top:10px;"><b>Решение:</b> ${q.solution}</p></div>`;
   }
-
+  document.getElementById('btn-next').style.display = '';
   saveState();
-}
-
-function normalizeAnswer(str) {
-  let s = str.trim().toLowerCase();
-  // Handle "2√3" type answers
-  // Try to evaluate simple expressions
-  try {
-    // Replace √ with Math.sqrt
-    let expr = s.replace(/√(\d+)/g, 'Math.sqrt($1)');
-    expr = expr.replace(/·/g, '*').replace(/×/g, '*');
-    // Allow "2sqrt(3)" or "2√3"
-    expr = expr.replace(/sqrt/g, 'Math.sqrt');
-    let result = Function('"use strict"; return (' + expr + ')')();
-    if (typeof result === 'number' && isFinite(result)) {
-      return parseFloat(result.toFixed(4));
-    }
-  } catch(e) {}
-
-  // Direct comparison
-  // Try parsing as number
-  let num = parseFloat(s);
-  if (!isNaN(num)) return num;
-
-  return s;
 }
 
 function skipQuestion() {
   const taskData = DATA[state.currentTask];
   const sub = taskData.subtopics[state.currentSubtopic];
   const q = sub.questions[state.currentQuestionIndex];
-
   const compKey = `${state.currentTask}-${state.currentSubtopic}`;
   if (!state.completed[compKey]) state.completed[compKey] = [false, false];
-  // Mark as not correct (already false by default)
-  state.completed[compKey][state.currentQuestionIndex] = false;
 
-  state.skipped++;
-  state.sessionSubtopic.skipped++;
-
-  const input = document.getElementById('answer-input');
-  input.disabled = true;
+  state.skipped++; state.session.skipped++;
+  document.getElementById('answer-input').disabled = true;
   document.getElementById('btn-check').style.display = 'none';
+  document.getElementById('btn-skip').style.display = 'none';
+  document.getElementById('btn-hint').style.display = 'none';
 
   const fb = document.getElementById('feedback');
-  let hintsHTML = '';
-  if (q.hints) {
-    q.hints.forEach((h, i) => {
-      hintsHTML += `<div class="hint">💡 <b>Подсказка ${i + 1}:</b> ${h}</div>`;
-    });
-  }
-
   fb.className = 'feedback show error';
-  fb.innerHTML = `
-    <h4>⏭ Задание пропущено</h4>
-    <div class="solution">
-      <p class="answer-correct">✅ Правильный ответ: ${q.answer}</p>
-      ${hintsHTML}
-      <p style="margin-top:10px;"><b>Решение:</b> ${q.solution}</p>
-    </div>
-  `;
-
-  const skipBtn = document.querySelector('#nav-btns .btn-warning');
-  if (skipBtn) skipBtn.remove();
+  fb.innerHTML = `<h4>⏭ Задание пропущено</h4><div class="solution"><p class="answer-correct">✅ Правильный ответ: ${q.answer}</p><p style="margin-top:10px;"><b>Решение:</b> ${q.solution}</p></div>`;
   document.getElementById('btn-next').style.display = '';
-
   saveState();
 }
 
 function nextQuestion() {
   const taskData = DATA[state.currentTask];
   const sub = taskData.subtopics[state.currentSubtopic];
-
   state.currentQuestionIndex++;
-
-  if (state.currentQuestionIndex >= sub.questions.length) {
-    // Subtopic complete
-    showSummary();
-  } else {
-    renderQuestion();
-  }
+  if (state.currentQuestionIndex >= sub.questions.length) showSummary();
+  else renderQuestion();
 }
 
 function showSummary() {
-  const s = state.sessionSubtopic;
-  const total = s.correct + s.wrong + s.skipped;
+  const s = state.session; const total = s.correct + s.wrong + s.skipped;
   const pct = total > 0 ? Math.round(s.correct / total * 100) : 0;
-
-  const taskData = DATA[state.currentTask];
-  const sub = taskData.subtopics[state.currentSubtopic];
-
-  document.getElementById('summary-task').textContent = `${taskData.name} — ${sub.name}`;
-
+  document.getElementById('summary-task').textContent = `${DATA[state.currentTask].name} — ${DATA[state.currentTask].subtopics[state.currentSubtopic].name}`;
   document.getElementById('summary-stats').innerHTML = `
     <div class="stat-item"><div class="num">${s.correct}</div><div class="label">Верно</div></div>
     <div class="stat-item"><div class="num">${s.wrong}</div><div class="label">Ошибки</div></div>
     <div class="stat-item"><div class="num">${s.skipped}</div><div class="label">Пропущено</div></div>
-    <div class="stat-item"><div class="num">${pct}%</div><div class="label">Результат</div></div>
-  `;
-
+    <div class="stat-item"><div class="num">${pct}%</div><div class="label">Результат</div></div>`;
   showScreen('summary');
 }
 
-// ═══════════════════════════════════════════════════════════
-// KEYBOARD
-// ═══════════════════════════════════════════════════════════
+function normalizeAnswer(str) {
+  let s = str.trim().toLowerCase();
+  try {
+    let expr = s.replace(/√(\d+)/g, 'Math.sqrt($1)').replace(/·/g, '*').replace(/×/g, '*').replace(/sqrt/g, 'Math.sqrt');
+    let result = Function('"use strict"; return (' + expr + ')')();
+    if (typeof result === 'number' && isFinite(result)) return parseFloat(result.toFixed(4));
+  } catch(e) {}
+  let num = parseFloat(s); return isNaN(num) ? s : num;
+}
+
 document.getElementById('answer-input').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') {
     e.preventDefault();
-    if (!this.disabled) {
-      checkAnswer();
-    } else {
-      nextQuestion();
-    }
+    if (!this.disabled) checkAnswer(); else nextQuestion();
   }
 });
 
-// ═══════════════════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════════════════
-loadState();
-renderHome();
+loadState(); renderHome();
 </script>
 </body>
 </html>
